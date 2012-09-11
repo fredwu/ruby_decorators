@@ -4,11 +4,11 @@ require "ruby_decorators/stack"
 
 module RubyDecorators
   def method_added(method_name)
-    @decorated_methods ||= []
+    @__decorated_methods ||= []
 
     return if RubyDecorators::Stack.decorators.empty?  ||
               method_name.to_s =~ /__undecorated_/     ||
-              @decorated_methods.include?(method_name)
+              @__decorated_methods.include?(method_name)
 
     current_decorator = RubyDecorators::Stack.decorators.pop
     method_visibility = detect_method_visibility(method_name)
@@ -32,7 +32,7 @@ module RubyDecorators
       end
     RUBY_EVAL
 
-    @decorated_methods << method_name
+    @__decorated_methods << method_name
   end
 
   private
