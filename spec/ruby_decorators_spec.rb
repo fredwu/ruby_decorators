@@ -26,8 +26,6 @@ describe RubyDecorators do
   class DummyClass
     extend RubyDecorators
 
-    attr_reader :greeting
-
     def initialize
       @greeting = 'hello world'
     end
