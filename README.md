@@ -35,7 +35,7 @@ class Catwoman < RubyDecorator
   end
 end
 
-class DummyClass
+class World
   extend RubyDecorators
 
   def initialize
@@ -62,12 +62,12 @@ class DummyClass
   end
 end
 
-dummy = DummyClass.new
+world = World.new
 
-dummy.hello_world # => "hello world"
-dummy.hello_batman # => "hello batman"
-dummy.hello_catwoman # => "hello catwoman"
-dummy.hello_super_catwoman # => "hello super catwoman"
+world.hello_world          # => "hello world"
+world.hello_batman         # => "hello batman"
+world.hello_catwoman       # => "hello catwoman"
+world.hello_super_catwoman # => "hello super catwoman"
 ```
 
 ## License
