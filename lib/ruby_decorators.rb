@@ -1,43 +1,41 @@
 require "ruby_decorators/version"
 require "ruby_decorator"
-require "ruby_decorators/stack"
 
 module RubyDecorators
+  class Stack
+    def self.all
+      @all ||= []
+    end
+  end
+
   def method_added(method_name)
-    @__decorated_methods ||= []
+    super
 
-    return if RubyDecorators::Stack.decorators.empty?  ||
-              method_name.to_s =~ /__undecorated_/     ||
-              @__decorated_methods.include?(method_name)
+    @methods    ||= {}
+    @decorators ||= {}
 
-    current_decorator = RubyDecorators::Stack.decorators.pop
-    method_visibility = detect_method_visibility(method_name)
+    return if RubyDecorators::Stack.all.empty?
+
+    @methods[method_name]    = instance_method(method_name)
+    @decorators[method_name] = RubyDecorators::Stack.all.pop(42)
 
     class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
-      alias_method :__undecorated_#{method_name}, :#{method_name}
-
-      @__decorators ||= {}
-      @__decorators["#{method_name}"] = current_decorator
-
-      #{method_visibility}
+      #{method_visibility_for(method_name)}
       def #{method_name}(*args, &blk)
-        decorator = #{current_decorator}.new
-        decorator ||= self.class.instance_variable_get(:@__decorators)["#{method_name}"]
+        decorators = self.class.instance_variable_get(:@decorators)[:#{method_name}]
+        method     = self.class.instance_variable_get(:@methods)[:#{method_name}]
 
-        if args.any?
-          decorator.call(method(:__undecorated_#{method_name}), *args, &blk)
-        else
-          decorator.call(method(:__undecorated_#{method_name}), &blk)
-        end
+        decorators.inject(method.bind(self)) do |method, decorator|
+          decorator = decorator.new if decorator.respond_to?(:new)
+          lambda { |*a, &b| decorator.call(method, *a, &b) }
+        end.call(*args, &blk)
       end
     RUBY_EVAL
-
-    @__decorated_methods << method_name
   end
 
   private
 
-  def detect_method_visibility(method_name)
+  def method_visibility_for(method_name)
     if private_method_defined?(method_name)
       :private
     elsif protected_method_defined?(method_name)

@@ -7,6 +7,12 @@ describe RubyDecorators do
     end
   end
 
+  class Hi < RubyDecorator
+    def call(this, *args, &blk)
+      this.call(*args, &blk).sub('hello', 'hi')
+    end
+  end
+
   class Batman < RubyDecorator
     def call(this, *args, &blk)
       this.call(*args, &blk).sub('world', 'batman')
@@ -20,6 +26,15 @@ describe RubyDecorators do
 
     def call(this, *args, &blk)
       this.call(*args, &blk).sub('world', @args.join(' '))
+    end
+  end
+
+  class DummyClass2
+    extend RubyDecorators
+
+    +Hi
+    def hi
+      'hello'
     end
   end
 
@@ -68,6 +83,18 @@ describe RubyDecorators do
       @greeting
     end
 
+    +Hi
+    +Batman
+    def hi_batman
+      @greeting
+    end
+
+    +Hi
+    +Catwoman.new('super', 'catwoman')
+    def hi_super_catwoman(arg1)
+      "#{@greeting}#{arg1}"
+    end
+
     protected
 
     +Batman
@@ -86,6 +113,7 @@ describe RubyDecorators do
   subject { DummyClass.new }
 
   it "#hello_world" do
+    DummyClass2.new.hi.must_equal 'hi'
     subject.hello_world.must_equal 'hello world'
   end
 
@@ -124,6 +152,16 @@ describe RubyDecorators do
 
     it "decorate a simple method" do
       subject.hello_super_catwoman.must_equal 'hello super catwoman'
+    end
+  end
+
+  describe "multiple decorators" do
+    it "decorates a simple method" do
+      subject.hi_batman.must_equal 'hi batman'
+    end
+
+    it "decorates a method with args" do
+      subject.hi_super_catwoman('!').must_equal 'hi super catwoman!'
     end
   end
 end
