@@ -26,6 +26,12 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
+class Hi < RubyDecorator
+  def call(this, *args, &blk)
+    this.call(*args, &blk).sub('hello', 'hi')
+  end
+end
+
 class Batman < RubyDecorator
   def call(this, *args, &blk)
     this.call(*args, &blk).sub('world', 'batman')
@@ -58,6 +64,7 @@ class World
     @greeting
   end
 
+  +Hi
   +Catwoman
   def hello_catwoman
     @greeting
@@ -73,7 +80,7 @@ world = World.new
 
 world.hello_world          # => "hello world"
 world.hello_batman         # => "hello batman"
-world.hello_catwoman       # => "hello catwoman"
+world.hello_catwoman       # => "hi catwoman"
 world.hello_super_catwoman # => "hello super catwoman"
 ```
 
