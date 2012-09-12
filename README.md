@@ -20,8 +20,8 @@ Or install it yourself as:
 
 ```ruby
 class Batman < RubyDecorator
-  def call(this)
-    this.sub('world', 'batman')
+  def call(this, *args, &blk)
+    this.call(*args, &blk).sub('world', 'batman')
   end
 end
 
@@ -30,8 +30,8 @@ class Catwoman < RubyDecorator
     @args = args.any? ? args : ['catwoman']
   end
 
-  def call(this)
-    this.sub('world', @args.join(' '))
+  def call(this, *args, &blk)
+    this.call(*args, &blk).sub('world', @args.join(' '))
   end
 end
 

@@ -8,8 +8,8 @@ describe RubyDecorators do
   end
 
   class Batman < RubyDecorator
-    def call(this)
-      this.sub('world', 'batman')
+    def call(this, *args, &blk)
+      this.call(*args, &blk).sub('world', 'batman')
     end
   end
 
@@ -18,8 +18,8 @@ describe RubyDecorators do
       @args = args.any? ? args : ['catwoman']
     end
 
-    def call(this)
-      this.sub('world', @args.join(' '))
+    def call(this, *args, &blk)
+      this.call(*args, &blk).sub('world', @args.join(' '))
     end
   end
 

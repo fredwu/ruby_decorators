@@ -25,9 +25,9 @@ module RubyDecorators
         decorator ||= self.class.instance_variable_get(:@__decorators)["#{method_name}"]
 
         if args.any?
-          decorator.call(self.send :__undecorated_#{method_name}, *args, &blk)
+          decorator.call(method(:__undecorated_#{method_name}), *args, &blk)
         else
-          decorator.call(self.send :__undecorated_#{method_name}, &blk)
+          decorator.call(method(:__undecorated_#{method_name}), &blk)
         end
       end
     RUBY_EVAL
