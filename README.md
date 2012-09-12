@@ -2,6 +2,13 @@
 
 #### Ruby method decorators inspired by Python.
 
+I wrote this as a small practice for some ruby meta-programming fun.
+
+There are also these other two implementations:
+
+- Yehuda Katz's [Ruby Decorators](https://github.com/wycats/ruby_decorators)
+- Michael Fairley's [Method Decorators](https://github.com/michaelfairley/method_decorators)
+
 ## Installation
 
 Add this line to your application's Gemfile:
