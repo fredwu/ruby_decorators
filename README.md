@@ -2,7 +2,7 @@
 
 #### Ruby method decorators inspired by Python.
 
-I wrote this as a small practice for some ruby meta-programming fun.
+I wrote this as a small practice for some ruby meta-programming fun. The implementation is relatively simple, and is thread safe.
 
 There are also these other two implementations:
 
