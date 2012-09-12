@@ -44,6 +44,10 @@ describe RubyDecorators do
       @greeting
     end
 
+    def hello_untouched
+      @greeting
+    end
+
     +Batman
     def hello_with_args(arg1, arg2)
       "#{@greeting} #{arg1} #{arg2}"
@@ -106,6 +110,10 @@ describe RubyDecorators do
 
     it "decorates a method with a block" do
       subject.hello_with_block('how are', 'you') { 'man?' }.must_equal 'hello batman how are you man?'
+    end
+
+    it "ignores undecorated methods" do
+      subject.hello_untouched.must_equal 'hello world'
     end
   end
 
