@@ -17,7 +17,10 @@ module RubyDecorators
     return if RubyDecorators::Stack.all.empty?
 
     @methods[method_name]    = instance_method(method_name)
-    @decorators[method_name] = RubyDecorators::Stack.all.pop(42)
+
+    RubyDecorators::Stack.all.tap do |a|
+      @decorators[method_name] = a.clone
+    end.clear
 
     class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
       #{method_visibility_for(method_name)}
