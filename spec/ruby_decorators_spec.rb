@@ -118,6 +118,17 @@ describe RubyDecorators do
   end
 
   describe "a simple decorator" do
+    it "clones and clears the stack" do
+      arr = MiniTest::Mock.new
+      arr.expect(:tap, nil)
+      arr.expect(:clone, [DummyDecorator])
+      arr.expect(:clear, nil)
+      RubyDecorators::Stack.stub :all, arr do
+        assert arr.clone == [DummyDecorator]
+      end
+      subject.hello_public.must_equal 'hello batman'
+    end
+
     it "decorates a public method" do
       subject.hello_public.must_equal 'hello batman'
     end
