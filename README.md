@@ -89,3 +89,7 @@ world.hello_super_catwoman # => "hello super catwoman"
 Copyright (c) 2012 [Fred Wu](http://fredwu.me/)
 
 Licensed under the [MIT license](http://fredwu.mit-license.org/).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fredwu/ruby_decorators/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
